@@ -27,7 +27,11 @@ export const booksSlice = createSlice({
       state.books = state.books.filter(book => book.uuid!== action.payload)
     },
     setBookFavorite: (state, action: PayloadAction<{uuid: string}>) => {
-      state.books = state.books.map(book => book.uuid === action.payload.uuid ? {...book, isFavorite:!book.isFavorite} : book)
+      state.books.forEach(book => {
+        if (book.uuid === action.payload.uuid) {
+          book.isFavorite =!book.isFavorite;
+        }
+      })
     }
   }
 })

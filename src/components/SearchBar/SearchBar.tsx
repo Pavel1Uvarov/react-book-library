@@ -1,49 +1,17 @@
-import { useState } from "react";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { Input } from "../ui/input";
-import { SearchBarFields, searchBarActions } from "@/store/searchbar.slice";
-import { AppDispatch } from "@/store/store";
-import { useDispatch } from "react-redux";
-import { CheckedState } from "@radix-ui/react-checkbox";
+import { useSearchBar } from "./_searchbar.hook";
 
 const SearchBar = () => {
-  const [byAuthor, setByAuthor] = useState<string>("");
-  const [byTitle, setByTitle] = useState<string>("");
-  const [showOnlyFavorites, setShowOnlyFavorites] =
-    useState<CheckedState>(false);
-  const dispatch = useDispatch<AppDispatch>();
-
-  const handleSearch = (
-    fieldName: SearchBarFields,
-    value: string | boolean
-  ) => {
-    dispatch(
-      searchBarActions.updateField({ fieldName: fieldName, value: value })
-    );
-  };
-
-  const handleFieldUpdate = (fieldName: string, value: string) => {
-    if (fieldName === "byTitle") {
-      setByTitle(value);
-      handleSearch(SearchBarFields.filterByTitle, value);
-    }
-    if (fieldName === "byAuthor") {
-      setByAuthor(value);
-      handleSearch(SearchBarFields.filterByAuthor, value);
-    }
-  };
-
-  const handleToggleFavoriteBooks = (value: CheckedState) => {
-    setShowOnlyFavorites(value);
-    handleSearch(SearchBarFields.showOnlyFavorites, value);
-  };
-
-  const handleResetFilters = () => {
-    setByAuthor("");
-    setByTitle("");
-    dispatch(searchBarActions.resetStore());
-  };
+  const {
+    byAuthor,
+    byTitle,
+    showOnlyFavorites,
+    handleFieldUpdate,
+    handleToggleFavoriteBooks,
+    handleResetFilters,
+  } = useSearchBar();
 
   return (
     <div className="grid grid-cols-4 gap-10 border-b py-2 items-center">
